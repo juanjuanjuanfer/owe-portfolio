@@ -12,7 +12,7 @@ st.set_page_config(
 st.markdown("""<div class="profile-container">
             <a href="portfolio">
         <button>Go Home 🏠</button>""", unsafe_allow_html=True)
-st.markdown("## Assignment 3")
+st.markdown("## Assignment 6")
 st.markdown("### Video: Communication in Real-world Situations")
 st.markdown("Due date: Oct 3rd, 2024")
 st.markdown("### Instructions")
