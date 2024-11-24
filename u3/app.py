@@ -201,6 +201,7 @@ def show_document_content(doc_type):
     )
     # Tips and Common Mistakes
     col1, col2 = st.columns(2)
+    
     with col1:
         st.markdown("### 💡 Pro Tips")
         for tip in get_tips(doc_type):
