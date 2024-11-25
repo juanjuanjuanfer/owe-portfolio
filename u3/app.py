@@ -1,6 +1,209 @@
 import streamlit as st
-import pandas as pd
+import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
+import json
 
+
+def load_lottie(url: str):
+    """Load Lottie animation from URL"""
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+def show_visuals(doc_type):
+    # Dictionary of Lottie animation URLs for each document type
+    lottie_urls = {
+        "Business Letters": "https://assets8.lottiefiles.com/packages/lf20_u25cckyh.json",  # Writing animation
+        "Memos": "https://lottie.host/1def217e-64ff-48af-9448-2e600edf3420/c4FVSijl9r.json",  # Note taking animation
+        "Executive Summaries": "https://assets8.lottiefiles.com/packages/lf20_xyadoh9h.json",  # Data analysis
+        "CV/Resume": "https://lottie.host/7fea4ac0-cfdc-4d6b-a6fe-e886bb7b85ec/O5iKLmaxWU.json",  # Profile document
+        "Proposals": "https://lottie.host/269b35c9-1167-45f5-be79-f6d6902cf405/i8g0OfR4d6.json"  # Presentation
+    }
+
+    # Icons and diagrams for each section
+    section_visuals = {
+    "Business Letters": {
+        "icons": {
+            "letterhead": "📑",
+            "date": "📅",
+            "address": "📍",
+            "greeting": "👋",
+            "body": "📝",
+            "closing": "✒️",
+            "signature": "✍️"
+        }
+    },
+    "Memos": {
+        "icons": {
+            "header": "📋",
+            "to": "👥",
+            "from": "👤",
+            "date": "📅",
+            "subject": "📌",
+            "purpose": "🎯",
+            "details": "📝",
+            "action": "⚡️",
+            "timeline": "⏱️"
+        }
+    },
+    "Executive Summaries": {
+        "icons": {
+            "title": "📊",
+            "overview": "🔍",
+            "findings": "💡",
+            "recommendations": "✅",
+            "financial": "💰",
+            "timeline": "📅",
+            "conclusion": "🎯"
+        }
+    },
+    "CV/Resume": {
+        "icons": {
+            "contact": "📞",
+            "summary": "📋",
+            "experience": "💼",
+            "education": "🎓",
+            "skills": "🔧",
+            "certifications": "📜",
+            "achievements": "🏆"
+        }
+    },
+    "Proposals": {
+        "icons": {
+            "summary": "📊",
+            "problem": "❗",
+            "solution": "💡",
+            "methodology": "🔄",
+            "budget": "💰",
+            "timeline": "📅",
+            "team": "👥",
+            "risks": "⚠️",
+            "conclusion": "🎯"
+        }
+    }
+}
+
+    # Load and display the Lottie animation
+    if doc_type in lottie_urls:
+        lottie_json = load_lottie(lottie_urls[doc_type])
+        if lottie_json:
+            st_lottie(lottie_json, height=200)
+
+
+        
+
+    # Show interactive format guide
+    st.markdown("### Format Guide")
+    with st.expander("View Interactive Format Guide"):
+        if doc_type in section_visuals:
+            # Display section icons
+            st.markdown("#### Document Components:")
+            for section, icon in section_visuals[doc_type]["icons"].items():
+                st.markdown(f"{icon} **{section.title()}**")
+            
+            # Add specific formatting tips based on document type
+            st.markdown("#### Formatting Guidelines:")
+            if doc_type == "Business Letters":
+                st.markdown("""
+                - Use standard business letter format (block or modified block)
+                - Single space within paragraphs, double space between
+                - Left-align all content (block format) or dates/signatures (modified)
+                - Include all company letterhead elements
+                """)
+                
+            elif doc_type == "Memos":
+                st.markdown("""
+                - Use standard memo header format (TO, FROM, DATE, SUBJECT)
+                - Left-align all content
+                - Use headers for different sections
+                - Include clear action items with deadlines
+                - Single space with extra space between sections
+                """)
+                
+            elif doc_type == "Executive Summaries":
+                st.markdown("""
+                - Keep to 1-2 pages maximum
+                - Use clear section headings
+                - Include bullet points for key findings
+                - Use tables or graphs for data presentation
+                - Maintain consistent formatting throughout
+                """)
+                
+            elif doc_type == "CV/Resume":
+                st.markdown("""
+                - Use consistent margins (typically 1 inch)
+                - Choose a clean, professional font
+                - Use bullet points for experiences
+                - Include white space for readability
+                - Maintain consistent date formatting
+                """)
+                
+            elif doc_type == "Proposals":
+                st.markdown("""
+                - Use clear section numbering
+                - Include table of contents for longer proposals
+                - Use headers and subheaders consistently
+                - Include visuals and diagrams
+                - Maintain consistent spacing throughout
+                """)
+            
+            # Add visual spacing guide
+            st.markdown("#### Spacing and Margins:")
+            spacing_guide = {
+                "Business Letters": "1-inch margins all around",
+                "Memos": "1-1.25 inch margins",
+                "Executive Summaries": "1-inch margins, 1.15-1.5 line spacing",
+                "CV/Resume": "0.5-1 inch margins",
+                "Proposals": "1-inch margins, 1.15-1.5 line spacing"
+            }
+            st.info(spacing_guide[doc_type])
+
+def show_guidelines_visual():
+    """Show visual guidelines for document creation"""
+    st.markdown("""
+    <style>
+    .guideline-container {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+    .guideline-item {
+        text-align: center;
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Display visual guidelines
+    cols = st.columns(3)
+    with cols[0]:
+        st.markdown("### 📏 Formatting")
+        st.image("/api/placeholder/200/200", caption="Proper Spacing Example")
+    
+    with cols[1]:
+        st.markdown("### 🎨 Style")
+        st.image("/api/placeholder/200/200", caption="Font and Layout")
+    
+    with cols[2]:
+        st.markdown("### ✍️ Content")
+        st.image("/api/placeholder/200/200", caption="Writing Tips")
+
+def select_video(doc_type):
+    # Dictionary of video URLs for each document type
+    video_urls = {
+        "Business Letters": "https://youtu.be/7xUTguLaaXI?si=huFhr-cyr3UEDwEq",  # Profile document
+        "Memos": "https://youtu.be/eHZdnldGuls?si=B-FnM3hxh4dL17vi",  # Presentation
+        "Executive Summaries": "https://youtu.be/SE-wnHBtP1s?si=3SvtcQbKRJtc0eED",  # Data analysis
+        "CV/Resume": "https://youtu.be/529bck9aFRM?si=Pkqo1wIAkIsUz9oU",  # Profile document
+        "Proposals": "https://youtu.be/oUiKwFNzKDM?si=q9p4jRJLGFeQ1X-u"  # Presentation
+    }
+
+    return video_urls.get(doc_type)
 def main():
     # Page config
     st.set_page_config(
@@ -151,6 +354,7 @@ def main():
     st.subheader("What Are Executive Documents?")
     st.write("Executive documents are formal business communications used to convey important information, proposals, or professional qualifications in a structured format. They are essential tools in business settings that require clear, concise, and professional presentation.")
 
+
     # Document Type Selector
     doc_type = st.selectbox(
         "Select Document Type",
@@ -160,8 +364,14 @@ def main():
     # Dynamic Content Based on Selection
     show_document_content(doc_type)
 
+    if st.checkbox("Team Participation"):
+        st.table({
+            "Team Member": ["Miguel Bastarrachea", "Angel Campos", "Christopher Cumi", "Juan Fernandez", "Julis Ramayo"],
+            "Percentage Contribution": [100, 100, 100,100,100]
+        })
 def show_document_content(doc_type):
     # Document Overview Section
+    show_visuals(doc_type)
     with st.container():
         st.markdown(f"## Understanding {doc_type}")
         
@@ -174,10 +384,16 @@ def show_document_content(doc_type):
             - Formality: {get_formality(doc_type)}
             """)
 
+
+    #show video if button is clicked
+    if st.checkbox("Watch Video Tutorial"):
+        st.video(select_video(doc_type))
     # Interactive Template Explorer
+
     st.markdown("### 📝 Template Explorer")
     with st.expander("View Template Structure", expanded=True):
         show_template(doc_type)
+    st.markdown( "<div class='highlight-box'>", unsafe_allow_html=True)
 
     # Interactive Elements Section
     col1, col2 = st.columns(2)
@@ -188,6 +404,9 @@ def show_document_content(doc_type):
     with col2:
         st.markdown("### 🎯 Best Practices")
         show_best_practices(doc_type)
+    
+    # blue box for visual guidelines
+    st.markdown( "<div class='highlight-box'>", unsafe_allow_html=True)
 
     # Interactive Practice Section
     st.markdown("### Example")
@@ -201,7 +420,7 @@ def show_document_content(doc_type):
     )
     # Tips and Common Mistakes
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.markdown("### 💡 Pro Tips")
         for tip in get_tips(doc_type):
