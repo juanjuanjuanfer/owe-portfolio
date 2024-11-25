@@ -432,16 +432,8 @@ def show_document_content(doc_type):
             st.warning(mistake)
 
     # Quick Quiz
-    st.markdown("### 🎯 Quick Check")
-    with st.form("quiz"):
-        st.write("Test your knowledge:")
-        q1 = st.radio(
-            get_quiz_question(doc_type),
-            get_quiz_options(doc_type)
-        )
-        quiz_submitted = st.form_submit_button("Submit Answer")
-        if quiz_submitted:
-            check_quiz_answer(doc_type, q1)
+    st.subheader("Want a real challenge? Take this quick quiz to test your knowledge!")
+    st.link_button("Go to Quiz Page", "https://executive-documents-test.streamlit.app/")
 
 def check_understanding(doc_type, answer):
     st.success("Great observation! Here's what you might have missed...")
